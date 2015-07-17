@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@using CascadedDroDownKo.Controllers
+
+@model PageVM
+<pre data-bind="text:ko.toJSON($data,0,2)"></pre>
+
+Country List: <select id="CountryDropdownList" data-bind="options: viewModel.CountryCollection,optionsText:'CountryName',optionsValue:'CountryName',value:viewModel.SelectedCountry"></select>
+State List: <select id="StateDropdownList" data-bind="options: viewModel.StateCollection,optionsText:'StateName',optionsValue:'StateName',value:viewModel.SelectedState"></select>
+City List: <select id="CityDropdownList" data-bind="options: viewModel.CityCollection,optionsText:'StateName',optionsValue:'StateName',value:viewModel.SelectedCity"></select>
+
+
+@section scripts{
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<script src="~/Scripts/knockout-3.3.0.js"></script>
+<script src="~/Scripts/knockout.mapping-latest.js"></script>
+    <script>
+    var viewModel = ko.mapping.fromJS({ "CountryCollection": [{ "Id": 0, "CountryName": "Country0" }, { "Id": 1, "CountryName": "Country1" }, { "Id": 2, "CountryName": "Country2" }, { "Id": 3, "CountryName": "Country3" }, { "Id": 4, "CountryName": "Country4" }, { "Id": 5, "CountryName": "Country5" }, { "Id": 6, "CountryName": "Country6" }, { "Id": 7, "CountryName": "Country7" }, { "Id": 8, "CountryName": "Country8" }, { "Id": 9, "CountryName": "Country9" }], "StateCollection": null, "CityCollection": null, "SelectedCountry": "Country3", "SelectedState": "State3", "SelectedCity": "City3" });
+        console.log(viewModel.SelectedState());
+        
+        viewModel.SelectedCountry.subscribe(function (newSelectedCountry) {
+           // alert(newSelectedCountry);
+            console.log(viewModel.SelectedState());
+            $.ajax({
+                url: 'Home/GetStateList?Country=' + newSelectedCountry,
+                success: function (data) {
+                    viewModel.StateCollection(ko.mapping.fromJS(data.StateCollection)());
+                    viewModel.SelectedState(data.SelectedState); //it works only if you set the value again otherwise it will reset to the default value
+                    //another alternative is to send the collections and selected value at load time
+                    console.log(viewModel.SelectedState());
+                }
+            })
+        });
+        
+
+        ko.applyBindings(viewModel);
+
+        $(function () {
+            //fire subscription on page load
+            viewModel.SelectedCountry.valueHasMutated();
+        })
+
+    </script>
+    }
