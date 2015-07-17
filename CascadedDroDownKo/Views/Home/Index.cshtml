@@ -6,9 +6,9 @@
 @model PageVM
 <pre data-bind="text:ko.toJSON($data,0,2)"></pre>
 
-Country List: <select id="CountryDropdownList" data-bind="options: viewModel.CountryCollection,optionsText:'CountryName',optionsValue:'CountryName',value:viewModel.SelectedCountry"></select>
-State List: <select id="StateDropdownList" data-bind="options: viewModel.StateCollection,optionsText:'StateName',optionsValue:'StateName',value:viewModel.SelectedState"></select>
-City List: <select id="CityDropdownList" data-bind="options: viewModel.CityCollection,optionsText:'StateName',optionsValue:'StateName',value:viewModel.SelectedCity"></select>
+Country List: <select id="CountryDropdownList" data-bind="options: CountryCollection,optionsText:'CountryName',optionsValue:'CountryName',value:SelectedCountry"></select>
+State List: <select id="StateDropdownList" data-bind="options: StateCollection,optionsText:'StateName',optionsValue:'StateName',value:SelectedState"></select>
+City List: <select id="CityDropdownList" data-bind="options: CityCollection,optionsText:'StateName',optionsValue:'StateName',value:SelectedCity"></select>
 
 
 @section scripts{
@@ -16,7 +16,7 @@ City List: <select id="CityDropdownList" data-bind="options: viewModel.CityColle
 <script src="~/Scripts/knockout-3.3.0.js"></script>
 <script src="~/Scripts/knockout.mapping-latest.js"></script>
     <script>
-    var viewModel = ko.mapping.fromJS({ "CountryCollection": [{ "Id": 0, "CountryName": "Country0" }, { "Id": 1, "CountryName": "Country1" }, { "Id": 2, "CountryName": "Country2" }, { "Id": 3, "CountryName": "Country3" }, { "Id": 4, "CountryName": "Country4" }, { "Id": 5, "CountryName": "Country5" }, { "Id": 6, "CountryName": "Country6" }, { "Id": 7, "CountryName": "Country7" }, { "Id": 8, "CountryName": "Country8" }, { "Id": 9, "CountryName": "Country9" }], "StateCollection": null, "CityCollection": null, "SelectedCountry": "Country3", "SelectedState": "State3", "SelectedCity": "City3" });
+    var viewModel = ko.mapping.fromJS(@Html.Raw(Model));
         console.log(viewModel.SelectedState());
         
         viewModel.SelectedCountry.subscribe(function (newSelectedCountry) {
